@@ -94,10 +94,10 @@ export default function Products() {
     );
   };
   return (
-    <div className="container my-5 py-5">
+    <div className="container mt-5 pt-5">
       <div className="row">
-        <div className="col-12 mb-5">
-          <h1 className="display-6 w-bolder text-center py-5">
+        <div className="col-12 mb-3">
+          <h1 className="display-6 w-bolder text-center py-3">
             Lates Products
           </h1>
         </div>
