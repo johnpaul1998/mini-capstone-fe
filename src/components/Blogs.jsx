@@ -1,20 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { blogs } from "../utilities/enum";
+import { bindActionCreators } from "redux";
+import * as actionBlog from "../redux/actions/actionBlog";
 
 export default function Blogs() {
-  const renderBlog = () => {
-    return blogs.map((item) => (
-      <div class="col-md-6 col-lg-4 card border-0 my-3" key={item.id}>
-        <img src={item.image} alt={item.title} />
-        <div class="card-body px-0">
-          <h4 class="card-title">{item.title}</h4>
-          <p class="card-text mt-3 text-muted">{item.body}</p>
-          <p class="card-text">
-            <small class="text-muted">author </small>
-            {item.author}
+  const [blogs, setBlogs] = useState([]);
+  const { getAllBlogs } = bindActionCreators(actionBlog, useDispatch());
+
+  useEffect(() => {
+    getAllBlogs().then((response) => {
+      setBlogs(response.payload);
+    });
+  }, []);
+
+  const renderBlogs = () => {
+    return blogs.map((blog) => (
+      <div className="col-md-6 col-lg-4 card border-0 my-3" key={blog.blogId}>
+        <img
+          src={blog.imageLink ? blog.imageLink : "/images/empty-image.jpeg"}
+          alt={blog.blogName}
+        />
+        <div className="card-body px-0">
+          <h4 className="card-title">{blog.blogName}</h4>
+          <p className="card-text mt-3 text-muted">{blog.description}</p>
+          <p className="card-text">
+            <small className="text-muted">Author: </small>
+            {blog.blogAuthor}
           </p>
-          <Link to="/products" class="btn">
+          <Link to="/products" className="btn">
             Read More
           </Link>
         </div>
@@ -23,12 +37,12 @@ export default function Blogs() {
   };
 
   return (
-    <section id="blogs" class="py-5">
-      <div class="container">
-        <div class="title text-center py-5">
-          <h2 class="position-relative d-inline-block">Our Latest Blog</h2>
+    <section id="blogs" className="py-5">
+      <div className="container">
+        <div className="title text-center py-5">
+          <h2 className="position-relative d-inline-block">Our Latest Blog</h2>
         </div>
-        <div className="row">{renderBlog()}</div>
+        <div className="row">{renderBlogs()}</div>
       </div>
     </section>
   );

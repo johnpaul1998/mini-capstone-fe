@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { renderLoading } from "../../utilities/Loader";
+import { renderLoading } from "../../utilities/loader";
 
 export default function Products() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState(data);
   const [componentMounted, setComponentMounted] = useState(true);
+
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
@@ -17,16 +18,20 @@ export default function Products() {
         setFilteredProducts(await response.json());
         setLoading(false);
       }
+
       return () => {
         setComponentMounted(false);
       };
     };
+
     getProducts();
   }, [componentMounted]);
+
   const filterProducts = (category) => {
-    const updateList = data.filter((item) => item.category === category);
-    setFilteredProducts(updateList);
+    const updatedList = data.filter((item) => item.category === category);
+    setFilteredProducts(updatedList);
   };
+
   const renderProducts = () => {
     return (
       <>
@@ -60,13 +65,14 @@ export default function Products() {
               className="btn btn-outline-dark me-2"
               onClick={() => filterProducts("electronics")}
             >
-              Electronic
+              Electronics
             </button>
           </div>
         </div>
+
         {filteredProducts.map((product) => (
           <React.Fragment key={product.id}>
-            <div className="col-md-4 mb-4">
+            <div className="col-md-3 mb-4">
               <div className="card h-100 text-center p-4">
                 <img
                   src={product.image}
@@ -78,12 +84,12 @@ export default function Products() {
                   <h5 className="card-title mb-0">
                     {product.title.substring(0, 12)}...
                   </h5>
-                  <p className="card-text lead fw-bold">${product.price}</p>
+                  <p className="card-tex lead fw-bold">$ {product.price}</p>
                   <Link
                     to={`/product/${product.id}`}
                     className="btn btn-outline-dark"
                   >
-                    Buy
+                    Buy now
                   </Link>
                 </div>
               </div>
@@ -93,17 +99,22 @@ export default function Products() {
       </>
     );
   };
+
   return (
-    <div className="container mt-5 pt-5">
-      <div className="row">
-        <div className="col-12 mb-3">
-          <h1 className="display-6 w-bolder text-center py-3">
-            Lates Products
-          </h1>
+    <div>
+      <div className="container mt-5 pt-5">
+        <div className="row">
+          <div className="col-12 mb-5">
+            <h1 className="display-6 fw-bolder text-center py-3">
+              Latest Products
+            </h1>
+            <hr />
+          </div>
         </div>
-      </div>
-      <div className="row justify-content-center">
-        {loading ? renderLoading() : renderProducts()}
+
+        <div className="row justify-content-center">
+          {loading ? renderLoading() : renderProducts()}
+        </div>
       </div>
     </div>
   );

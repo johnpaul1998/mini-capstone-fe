@@ -1,18 +1,18 @@
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
   faEnvelope,
   faMapMarked,
   faPhone,
 } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { Link } from "react-router-dom";
 import {
   faFacebook,
   faInstagram,
-  faPinterest,
   faTwitter,
+  faPinterest,
 } from "@fortawesome/free-brands-svg-icons";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
@@ -20,9 +20,12 @@ export default function Footer() {
       <div className="container">
         <div className="row text-white g-4">
           <div className="col-md-6 col-lg-3">
-            <Link to="/" className="brand text-decoration-none text-white">
+            <a
+              href="index.html"
+              className="brand text-decoration-none text-white"
+            >
               ULTRA
-            </Link>
+            </a>
             <p className="text-white mt-3 text-muted">
               Lorem ipsum dolor, sit amet consectetur adipisicing elit. Atque
               ipsa dolores laudantium harum repellat eligendi quos facilis qui
@@ -42,27 +45,26 @@ export default function Footer() {
               </li>
               <li className="my-3">
                 <Link
-                  to="products"
+                  to="/products"
                   className="text-white text-decoration-none text-muted"
                 >
-                  <FontAwesomeIcon icon={faChevronRight} />
-                  Products
+                  <FontAwesomeIcon icon={faChevronRight} /> Products
                 </Link>
               </li>
               <li className="my-3">
                 <Link
-                  to="/About"
+                  to="/about-us"
                   className="text-white text-decoration-none text-muted"
                 >
-                  <FontAwesomeIcon icon={faChevronRight} /> About us
+                  <FontAwesomeIcon icon={faChevronRight} /> About Us
                 </Link>
               </li>
               <li className="my-3">
                 <Link
-                  to="/Contact"
+                  to="/contact-us"
                   className="text-white text-decoration-none text-muted"
                 >
-                  <FontAwesomeIcon icon={faChevronRight} /> Contact
+                  <FontAwesomeIcon icon={faChevronRight} /> Contact Us
                 </Link>
               </li>
             </ul>

@@ -1,4 +1,5 @@
 import Skeleton from "react-loading-skeleton";
+
 export const renderLoading = () => {
   return (
     <div className="row g-3">

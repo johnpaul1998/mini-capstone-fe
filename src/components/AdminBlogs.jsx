@@ -10,7 +10,10 @@ export default function AdminBlogs() {
   const [author, setAuthor] = useState("");
   const [description, setDescription] = useState("");
   const blogList = useSelector((state) => state.blogList);
-  const { getAllBlogs } = bindActionCreators(actionBlog, useDispatch());
+  const { getAllBlogs, addBlog, deleteBlog } = bindActionCreators(
+    actionBlog,
+    useDispatch()
+  );
 
   // Validation
   const [invalidBlogName, setInvalidBlogName] = useState(false);
@@ -24,7 +27,15 @@ export default function AdminBlogs() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    checkIfValid();
+    if (checkIfValid()) {
+      const body = {
+        blogName: blogName,
+        blogAuthor: author,
+        description: description,
+      };
+
+      addBlog(body);
+    }
   };
 
   const checkIfValid = () => {
@@ -71,22 +82,18 @@ export default function AdminBlogs() {
 
     // Return statement
     return (
-      <div className="col-md-12 col-lg-4 card border-0 my-3" key={blog.blogId}>
+      <div className="card h-100 text-center p-4">
         <img
           src={blog.imageLink ? blog.imageLink : "/images/empty-image.jpeg"}
           alt={blog.blogName}
           {...getRootProps()}
         />
-        <div className="card-body px-0">
-          <h4 className="card-title">{blog.blogName}</h4>
-          <p className="card-text mt-3 text-muted">{blog.description}</p>
-          <p className="card-text">
-            <small className="text-muted">Author: </small>
-            {blog.author}
-          </p>
-          <button to="/products" className="btn">
-            DELETE
-          </button>
+        <div className="card-body">
+          <h5 className="card-title mb-0">
+            {blog?.blogName.substring(0, 12)}...
+          </h5>
+          <p className="card-text lead fw-bold">{blog.blogAuthor}</p>
+          <button onClick={() => deleteBlog(blog.blogId)}>DELETE</button>
         </div>
       </div>
     );
@@ -168,7 +175,6 @@ export default function AdminBlogs() {
         </div>
       </Form>
       <hr />
-      <h4 className="text-danger">BLOGS</h4>
       <div className="row justify-content-center">{renderBlogs()}</div>
     </>
   );

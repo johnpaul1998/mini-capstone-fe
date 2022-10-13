@@ -8,22 +8,16 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Container, Navbar } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase";
-import * as actionUser from "../redux/actions/actionUser";
-import { bindActionCreators } from "redux";
-import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../firebase";
 import Spinner from "react-spinkit";
-import { useCollection } from "react-firebase-hooks/firestore";
 
 export default function NavigationBar() {
   const [loading, setLoading] = useState(false);
-  const { logoutUser } = bindActionCreators(actionUser, useDispatch());
   const navigate = useNavigate();
-  const activeUser = useSelector((state) => state.activeUser);
-  const [cartProducts] = useCollection(
-    activeUser?.id &&
-      db.collection("users").doc(activeUser.id).collection("cart")
-  );
+  // const [cartProducts] = useCollection(
+  //   activeUser?.id &&
+  //     db.collection("users").doc(activeUser.id).collection("cart")
+  // );
 
   const logout = (e) => {
     e.preventDefault();
@@ -31,7 +25,7 @@ export default function NavigationBar() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      logoutUser();
+      localStorage.removeItem("email");
       navigate("/login");
     }, 1000);
   };
@@ -59,7 +53,7 @@ export default function NavigationBar() {
         </NavLink>
 
         <div className="nav-btns order-lg-2">
-          {activeUser.email ? (
+          {localStorage.email ? (
             <>
               <NavLink
                 to="/cart"
@@ -68,7 +62,7 @@ export default function NavigationBar() {
               >
                 <FontAwesomeIcon icon={faShoppingCart} />
                 <span className="nav-btn-label"> CART </span>(
-                {cartProducts ? cartProducts?.docs.length : 0})
+                {/* {cartProducts ? cartProducts?.docs.length : 0}) */}
               </NavLink>
               <NavLink
                 to="/login"
@@ -99,6 +93,15 @@ export default function NavigationBar() {
                 <span className="nav-btn-label"> REGISTER</span>
               </NavLink>
             </>
+          )}
+          {localStorage.email === "admin@admin.com" && (
+            <NavLink
+              to="/admin"
+              className="btn position-relative"
+              type="button"
+            >
+              <span className="nav-btn-label"> ADMIN</span>
+            </NavLink>
           )}
         </div>
 

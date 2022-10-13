@@ -5,7 +5,7 @@ import { Form, Modal } from "react-bootstrap";
 import { auth } from "../../../firebase";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import * as actionUser from "../../../redux/actions/actionUser";
 import { bindActionCreators } from "redux";
 
@@ -20,19 +20,19 @@ export default function Signup() {
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
 
-  const [user] = useAuthState(auth);
-  const activeUser = useSelector((state) => state.activeUser);
-  const { registerUser } = bindActionCreators(actionUser, useDispatch());
   const navigate = useNavigate();
+  const { registerUser } = bindActionCreators(actionUser, useDispatch());
+  const [user] = useAuthState(auth);
 
   useEffect(() => {
-    if (user || activeUser.email) {
+    if (user || localStorage.email) {
       navigate("/");
     }
   });
 
   const checkIfValid = () => {
     let isValid = true;
+
     // Check if password is same with confirmPassword
     if (password !== confirmPassword || !password) {
       setInvalidPassword(true);
@@ -40,13 +40,13 @@ export default function Signup() {
     } else {
       setInvalidPassword(false);
     }
+
     return isValid;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (checkIfValid()) {
-      // Call Registration API
       registerUser({ email: email, password: password })
         .then((response) => {
           console.log(response, "response");

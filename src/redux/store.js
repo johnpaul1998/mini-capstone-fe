@@ -4,16 +4,17 @@ import promise from 'redux-promise';
 import promiseMiddleware from 'redux-promise-middleware';
 import logger from 'redux-logger';
 
-// Reducer
-import userReducer from "./reducers/userReducer";
+// Reducers
 import productReducer from './reducers/productReducer';
 import blogReducer from './reducers/blogReducer';
+import popularProductReducer from "./reducers/popularProductReducer";
+
 
 export const store = configureStore({
     reducer: {
-        activeUser: userReducer,
         productList: productReducer,
         blogList: blogReducer,
+        popularProductList: popularProductReducer,
     },
     middleware: [
         thunk,
